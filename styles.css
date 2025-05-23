@@ -1,0 +1,9 @@
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(to top, #fbb1c6, #80c1e3);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
