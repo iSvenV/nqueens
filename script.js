@@ -62,6 +62,50 @@ function updateBoardDisplay(state) {
   }
 }
 
+//backtracking algorithm
+async function backtrack(state, row, N) {
+  if (row >= N) {
+    alert("Problem Solved");
+    return true;
+  }
+  
+  for (let col = 0; col < N; col++) {
+    const cell = cells[row][col];
+    const originalColor = ((row + col) % 2 === 0) ? "#ebecd0" : "#789454";
+    cell.style.backgroundColor = "yellow"; //checking square becomes yellow
+    await sleepWithPause(delay);
+    
+    if (isSafe(state, row, col)) {
+      state[row] = col;
+      updateBoardDisplay(state);
+      cell.style.backgroundColor = originalColor;
+      await sleepWithPause(delay);
+      
+      if (await backtrack(state, row + 1, N)) return true;
+      
+      cell.style.backgroundColor = "red"; //red square when removing queen
+      await sleepWithPause(delay);
+      state[row] = -1;
+      updateBoardDisplay(state);
+      cell.style.backgroundColor = originalColor;
+      await sleepWithPause(delay);
+    } else {
+      cell.style.backgroundColor = originalColor;
+    }
+  }
+  return false;
+}
+
+//checking for valid queen placement
+function isSafe(state, row, col) {
+  for (let i = 0; i < row; i++) {
+    if (state[i] === col || Math.abs(state[i] - col) === Math.abs(i - row)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 //pause/resume
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
